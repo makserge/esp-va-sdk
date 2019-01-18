@@ -113,11 +113,14 @@ int app_main()
     scli_init();
     diag_register_cli();
     wifi_register_cli();
+ 
     cm_event_group = xEventGroupCreate();
+ 
     tcpip_adapter_init();
+ 
 
     ESP_ERROR_CHECK(esp_event_loop_init(event_handler, NULL) );
-
+ 
     bool provisioned = false;
     if (conn_mgr_prov_is_provisioned(&provisioned) != ESP_OK) {
         ESP_LOGE(TAG, "Error getting device provisioning state");
@@ -142,11 +145,17 @@ int app_main()
         conn_mgr_prov_mem_release();        // This is useful in case of BLE provisioning
         wifi_init_sta();
     }
-
+   ESP_LOGI(TAG, "============================================== 1 ===============================");
+ 
     xEventGroupWaitBits(cm_event_group, CONNECTED_BIT, false, true, portMAX_DELAY);
-
+   ESP_LOGI(TAG, "============================================== 2 ===============================");
+ 
     i2s_playback_init();
+       ESP_LOGI(TAG, "============================================== 3 ===============================");
+ 
     app_dsp_init();
+       ESP_LOGI(TAG, "============================================== 4 ===============================");
+ 
 
 #ifdef ALEXA
     ret = alexa_init(va_cfg);
